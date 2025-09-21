@@ -1,41 +1,44 @@
 public class Ingresso {
-    public static final int NORMAL = 1;
-    public static final int ESPECIAL = 2;
-
     private String codigo;
-    private int tipo;
+    private boolean especial;
     private Participante participante;
-    private boolean entradaRegistrada = false;
+    private boolean entradaRegistrada;
 
-    public Ingresso(String codigo, int tipo, Participante participante) {
+    public Ingresso(String codigo, boolean especial) {
         this.codigo = codigo;
-        this.tipo = tipo;
-        this.participante = participante;
+        this.especial = especial;
+        this.participante = null;
+        this.entradaRegistrada = false;
     }
 
     public String getCodigo() {
         return codigo;
     }
-    public int getTipo() {
-        return tipo;
+
+    public boolean isEspecial() {
+        return especial;
     }
+
     public Participante getParticipante() {
         return participante;
     }
+
+    public void setParticipante(Participante participante) {
+        this.participante = participante;
+    }
+
     public boolean isEntradaRegistrada() {
         return entradaRegistrada;
     }
+
     public void registrarEntrada() {
         this.entradaRegistrada = true;
     }
 
     @Override
     public String toString() {
-        String tipoStr = (tipo == NORMAL ? "NORMAL" : "ESPECIAL");
-        String presenca = entradaRegistrada ? " (Presente)" : " (Ausente)";
-        return "Ingresso [codigo=" + codigo + ", tipo=" + tipoStr +
-                ", participante=" + participante.getNome() +
-                ", CPF=" + participante.getcpf() + presenca + "]";
+        return "Ingresso [Codigo: " + codigo +
+                ", Especial: " + (especial ? "Sim" : "Não") +
+                ", Participante: " + (participante != null ? participante.getNome() : "Nenhum") + "]";
     }
 }
-
