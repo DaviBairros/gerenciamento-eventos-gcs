@@ -1,14 +1,12 @@
 public class Pessoa {
     private String nome;
     private String email;
-    private int cpf;
+    private String cpf;
 
-    public Pessoa(String nome, String email, int cpf) {
+    public Pessoa(String nome, String email, String cpf) {
         this.nome = nome;
         this.email = email;
-        if (cpf == 11){
-            this.cpf = cpf;
-        }
+        this.cpf = cpf;
     }
 
     public String getNome() {
@@ -19,28 +17,11 @@ public class Pessoa {
         return email;
     }
 
-    public int getcpf() {
+    public String getCpf() {
         return cpf;
     }
 
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public void setCpf(int cpf) {
-        this.cpf = cpf;
-    }
-
     public String exibirInformacoes() {
-        return ("Pessoa [Nome: " + nome + ", Email: " + email + ", Cpf: " + cpf + "]");
-    }
-
-    @Override
-    public String toString() {
-        return exibirInformacoes();
+        return "Nome: " + nome + ", Email: " + email + ", CPF: " + cpf;
     }
 }
