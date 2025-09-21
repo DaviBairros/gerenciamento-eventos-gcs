@@ -1,104 +1,60 @@
 import java.util.ArrayList;
 
 public class Evento {
-
-    private static int proximoCodigo = 100;
     private int codigo;
     private String nome;
     private String data;
-    private double valor;
+    private double valorIngresso;
     private String responsavel;
-    private int lotacaoMaxima;
-    private int normaisDisponiveis;
-    private int especiaisDisponiveis;
+    private ArrayList<Ingresso> ingressos;
 
-    private ArrayList<Ingresso> ingressosVendidos;
-
-    public Evento(String nome, String data, double valor, String responsavel,
-                  int lotacaoMaxima) {
-        this.codigo = proximoCodigo++;
+    public Evento(int codigo, String nome, String data, double valorIngresso, String responsavel, int quantidade) {
+        this.codigo = codigo;
         this.nome = nome;
         this.data = data;
-        this.valor = valor;
+        this.valorIngresso = valorIngresso;
         this.responsavel = responsavel;
-        this.lotacaoMaxima = lotacaoMaxima;
-        this.ingressosVendidos = new ArrayList<>();
+        this.ingressos = new ArrayList<>();
 
-        int especiais = (lotacaoMaxima * 15) / 100;
-        if ((lotacaoMaxima * 15) % 100 != 0) especiais++;
-        this.especiaisDisponiveis = especiais;
-        this.normaisDisponiveis = lotacaoMaxima - especiais;
+
+        int especiais = (quantidade * 15) / 100;
+        int normais = quantidade - especiais;
+
+
+        for (int i = 1; i <= normais; i++) {
+            ingressos.add(new Ingresso(codigo + "-" + String.format("%03d", i), false));
+        }
+
+        for (int i = 1; i <= especiais; i++) {
+            ingressos.add(new Ingresso(codigo + "-" + String.format("%03dE", i), true));
+        }
     }
 
     public int getCodigo() {
-        return codigo;
-    }
+        return codigo;    }
+
     public String getNome() {
         return nome;
     }
-    public String getData() {
-        return data;
-    }
-    public double getValor() {
-        return valor;
-    }
-    public String getResponsavel() {
-        return responsavel;
-    }
-    public int getLotacaoMaxima() {
-        return lotacaoMaxima;
+
+    public ArrayList<Ingresso> getIngressos() {
+        return ingressos;
     }
 
-    public ArrayList<Ingresso> getIngressosVendidos() { return ingressosVendidos; }
-
-    private String formatSeq(int num) {
-        String texto = "" + num;
-
-        while (texto.length() < 3) {
-            texto = "0" + texto;
-        }
-
-        return texto;
-    }
-
-    public Ingresso emitirIngresso(int tipo, Participante p) {
-        if (tipo == Ingresso.NORMAL) {
-            if (normaisDisponiveis <= 0) return null;
-            int seq = (lotacaoMaxima - normaisDisponiveis - especiaisDisponiveis) + 1;
-            String codigoIng = codigo + "-" + formatSeq(seq);
-            Ingresso ing = new Ingresso(codigoIng, tipo, p);
-            ingressosVendidos.add(ing);
-            p.adicionarIngresso(ing);
-            normaisDisponiveis--;
-            return ing;
-        } else {
-            if (especiaisDisponiveis <= 0) return null;
-            int seq = (lotacaoMaxima - especiaisDisponiveis) + 1;
-            String codigoIng = codigo + "-" + formatSeq(seq) + "E";
-            Ingresso ing = new Ingresso(codigoIng, tipo, p);
-            ingressosVendidos.add(ing);
-            p.adicionarIngresso(ing);
-            especiaisDisponiveis--;
-            return ing;
-        }
-    }
-
-    public boolean registrarEntrada(String codigoIng) {
-        for (Ingresso i : ingressosVendidos) {
-            if (i.getCodigo().equals(codigoIng) && !i.isEntradaRegistrada()) {
-                i.registrarEntrada();
-                return true;
+    public Ingresso procurarIngressoPorCodigo(String codigoIngresso) {
+        for (Ingresso ing : ingressos) {
+            if (ing.getCodigo().equals(codigoIngresso)) {
+                return ing;
             }
         }
-        return false;
+        return null;
     }
 
     @Override
     public String toString() {
-        return "Evento [codigo=" + codigo + ", nome=" + nome +
-                ", data=" + data + ", valor=" + valor +
-                ", responsavel=" + responsavel +
-                ", lotação=" + lotacaoMaxima + "]";
+        return "Evento [Codigo: " + codigo + ", Nome: " + nome +
+                ", Data: " + data + ", Valor: " + valorIngresso +
+                ", Responsável: " + responsavel +
+                ", Total ingressos: " + ingressos.size() + "]";
     }
 }
-
