@@ -1,48 +1,62 @@
 import java.util.ArrayList;
 
 public class Evento {
+    private static int contadorEventos = 1;
     private int codigo;
-    private String nome;
+    private String titulo;
+    private String local;
     private String data;
-    private double valorIngresso;
     private String responsavel;
-    private ArrayList<Ingresso> ingressos;
+    private int capacidade;
+    private double valor;
+    private ArrayList<Ingresso> ingressosVendidos;
 
-    public Evento(int codigo, String nome, String data, double valorIngresso, String responsavel, int quantidade) {
-        this.codigo = codigo;
-        this.nome = nome;
+    public Evento(String titulo, String local, String data, String responsavel, int capacidade, double valor) {
+        this.codigo = contadorEventos++;
+        this.titulo = titulo;
+        this.local = local;
         this.data = data;
-        this.valorIngresso = valorIngresso;
         this.responsavel = responsavel;
-        this.ingressos = new ArrayList<>();
-
-
-        int especiais = (quantidade * 15) / 100;
-        int normais = quantidade - especiais;
-
-
-        for (int i = 1; i <= normais; i++) {
-            ingressos.add(new Ingresso(codigo + "-" + String.format("%03d", i), false));
-        }
-
-        for (int i = 1; i <= especiais; i++) {
-            ingressos.add(new Ingresso(codigo + "-" + String.format("%03dE", i), true));
-        }
+        this.capacidade = capacidade;
+        this.valor = valor;
+        this.ingressosVendidos = new ArrayList<>();
     }
 
     public int getCodigo() {
-        return codigo;    }
-
-    public String getNome() {
-        return nome;
+        return codigo;
     }
 
-    public ArrayList<Ingresso> getIngressos() {
-        return ingressos;
+    public String getTitulo() {
+        return titulo;
     }
+
+    public String getLocal() {
+        return local;
+    }
+
+    public String getData() {
+        return data;
+    }
+
+    public String getResponsavel() {
+        return responsavel;
+    }
+
+    public int getCapacidade() {
+        return capacidade;
+    }
+
+    public double getValor() {
+        return valor;
+    }
+
+    public ArrayList<Ingresso> getIngressosVendidos() {
+        return ingressosVendidos;
+    }
+
 
     public Ingresso procurarIngressoPorCodigo(String codigoIngresso) {
-        for (Ingresso ing : ingressos) {
+        for (Ingresso ing : ingressosVendidos) {
             if (ing.getCodigo().equals(codigoIngresso)) {
                 return ing;
             }
@@ -50,11 +64,23 @@ public class Evento {
         return null;
     }
 
+
+    public void adicionarIngresso(Ingresso ingresso) {
+        if (ingressosVendidos.size() < capacidade) {
+            ingressosVendidos.add(ingresso);
+        }
+    }
+
     @Override
     public String toString() {
-        return "Evento [Codigo: " + codigo + ", Nome: " + nome +
-                ", Data: " + data + ", Valor: " + valorIngresso +
-                ", Responsável: " + responsavel +
-                ", Total ingressos: " + ingressos.size() + "]";
+        return "Evento: codigo=" + codigo +
+                ", titulo='" + titulo + '\'' +
+                ", local='" + local + '\'' +
+                ", data='" + data + '\'' +
+                ", responsavel='" + responsavel + '\'' +
+                ", capacidade=" + capacidade +
+                ", valor=" + valor +
+                ", ingressosEmitidos=" + ingressosVendidos.size() +
+                '.';
     }
 }
