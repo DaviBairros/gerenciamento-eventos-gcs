@@ -4,8 +4,11 @@ public class Ingresso {
     private Participante participante;
     private boolean entradaRegistrada;
 
-    public Ingresso(String codigo, boolean especial) {
-        this.codigo = codigo;
+    private static int contador = 1;
+
+
+    public Ingresso(int codigoEvento, boolean especial) {
+        this.codigo = codigoEvento + "-" + contador++;
         this.especial = especial;
         this.participante = null;
         this.entradaRegistrada = false;
@@ -37,8 +40,9 @@ public class Ingresso {
 
     @Override
     public String toString() {
-        return "Ingresso [Codigo: " + codigo +
-                ", Especial: " + (especial ? "Sim" : "Não") +
-                ", Participante: " + (participante != null ? participante.getNome() : "Nenhum") + "]";
+        String p = (participante != null) ? participante.getNome() : "Nenhum";
+        String tipo = especial ? "Especial" : "Normal";
+        String pres = entradaRegistrada ? "Presente" : "Ausente";
+        return "Ingresso: Codigo: " + codigo + ", Tipo: " + tipo + ", Participante: " + p + ", Status: " + pres + ".";
     }
 }
