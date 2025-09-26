@@ -1,48 +1,63 @@
 public class Ingresso {
     private String codigo;
-    private boolean especial;
-    private Participante participante;
-    private boolean entradaRegistrada;
+    private String tipo;
+    private boolean vendido;
+    private boolean cancelado;
+    private boolean usado;
 
-    private static int contador = 1;
 
-
-    public Ingresso(int codigoEvento, boolean especial) {
-        this.codigo = codigoEvento + "-" + contador++;
-        this.especial = especial;
-        this.participante = null;
-        this.entradaRegistrada = false;
+    public Ingresso(String codigo, String tipo) {
+        this.codigo = codigo;
+        this.tipo = tipo;
+        this.vendido = false;
+        this.cancelado = false;
+        this.usado = false;
     }
 
     public String getCodigo() {
         return codigo;
     }
 
-    public boolean isEspecial() {
-        return especial;
+    public String getTipo() {
+        return tipo;
     }
 
-    public Participante getParticipante() {
-        return participante;
+    public boolean isVendido() {
+        return vendido;
     }
 
-    public void setParticipante(Participante participante) {
-        this.participante = participante;
+    public boolean isCancelado() {
+        return cancelado;
     }
 
-    public boolean isEntradaRegistrada() {
-        return entradaRegistrada;
+    public boolean isUsado() {
+        return usado;
     }
 
-    public void registrarEntrada() {
-        this.entradaRegistrada = true;
+    public void vender() {
+        if (!vendido) {
+            vendido = true;
+        }
     }
 
+    public void cancelar() {
+        if (vendido && !usado) {
+            cancelado = true;
+        }
+    }
+    public void usar() {
+        if (vendido && !cancelado) {
+            usado = true;
+        }
+    }
     @Override
     public String toString() {
-        String p = (participante != null) ? participante.getNome() : "Nenhum";
-        String tipo = especial ? "Especial" : "Normal";
-        String pres = entradaRegistrada ? "Presente" : "Ausente";
-        return "Ingresso: Codigo: " + codigo + ", Tipo: " + tipo + ", Participante: " + p + ", Status: " + pres + ".";
+        return "Ingresso:" +
+                "codigo='" + codigo + '\'' +
+                ", tipo='" + tipo + '\'' +
+                ", vendido=" + vendido +
+                ", cancelado=" + cancelado +
+                ", usado=" + usado +
+                '.';
     }
 }
