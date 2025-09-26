@@ -1,12 +1,70 @@
 import java.util.Scanner;
+import java.util.ArrayList;
 
 public class App {
     public static void main(String[] args) {
-        Scanner teclado = new Scanner(System.in);
-        GerenciadorEventos ger = new GerenciadorEventos();
 
-        int op;
-        do {
+        Ingresso[] ingressosEvento1 = new Ingresso[50];
+        for (int i = 0; i < 43; i++) {
+            ingressosEvento1[i] = new Ingresso("001-" + (i + 1), "NORMAL");
+        }
+        for (int i = 43; i < 50; i++) {
+            ingressosEvento1[i] = new Ingresso("001-" + (i + 1) + "E", "ESPECIAL");
+        }
+        Evento evento1 = new Evento(1,
+                "Show do Baitaca",
+                "15/10/2025",
+                10,
+                2025,
+                50,
+                50.0, ingressosEvento1);
+        //evento1.getIngressos()[0].vender();
+        //evento1.getIngressos()[1].vender();
+
+        Ingresso[] ingressosEvento2 = new Ingresso[45];
+        for (int i = 0; i < 38; i++) {
+            ingressosEvento2[i] = new Ingresso("002-" + (i + 1), "NORMAL");
+        }
+        for (int i = 38; i < 45; i++) {
+            ingressosEvento2[i] = new Ingresso("002-" + (i + 1) + "E", "ESPECIAL");
+        }
+        Evento evento2 = new Evento(2,
+                "Palestra sobre Java",
+                "20/10/2025",
+                10, 2025,
+                45,
+                20.0, ingressosEvento2);
+        //evento2.getIngressos()[0].vender();
+        //evento2.getIngressos()[1].vender();
+
+        Ingresso[] ingressosEvento3 = new Ingresso[70];
+        for (int i = 0; i < 60; i++) {
+            ingressosEvento3[i] = new Ingresso("003-" + (i + 1), "NORMAL");
+        }
+        for (int i = 60; i < 70; i++) {
+            ingressosEvento3[i] = new Ingresso("003-" + (i + 1) + "E", "ESPECIAL");
+        }
+        Evento evento3 = new Evento(3,
+                "Congresso de teologia",
+                "05/11/2025",
+                11,
+                2025,
+                70,
+                30.0, ingressosEvento3);
+        //evento3.getIngressos()[0].vender();
+        //evento3.getIngressos()[1].vender();
+
+        ArrayList<Evento> eventos = new ArrayList<>();
+        eventos.add(evento1);
+        eventos.add(evento2);
+        eventos.add(evento3);
+
+        GerenciadorEventos ger = new GerenciadorEventos(eventos);
+
+        Scanner teclado = new Scanner(System.in);
+        int opcao = -1;
+
+        while (opcao != 0) {
             System.out.println("\f===== MENU =====");
             System.out.println("1. Cadastrar Participante");
             System.out.println("2. Cadastrar Evento");
@@ -17,107 +75,33 @@ public class App {
             System.out.println("7. Cancelar Ingresso");
             System.out.println("8. Listar Participantes de um Evento");
             System.out.println("9. Procurar eventos por nome");
+            System.out.println("10. Relatório Financeiro");
+            System.out.println("11. Consultar Detalhes de um Evento");
             System.out.println("0. Sair");
             System.out.print("Escolha: ");
-            op = teclado.nextInt();
+
+            opcao = teclado.nextInt();
             teclado.nextLine();
 
-            switch (op) {
-                case 1:
-                    System.out.print("Nome: ");
-                    String pn = teclado.nextLine();
-                    System.out.print("Email: ");
-                    String pe = teclado.nextLine();
-                    System.out.print("CPF: ");
-                    String pc = teclado.nextLine();
-                    Participante p = ger.cadastrarParticipante(pn, pe, pc);
-                    System.out.println("Participante cadastrado: " + p.exibirInformacoes());
-                    break;
-
-                case 2:
-                    System.out.print("Título: ");
-                    String titulo = teclado.nextLine();
-                    System.out.print("Local: ");
-                    String local = teclado.nextLine();
-                    System.out.print("Data (dd/mm/aaaa): ");
-                    String data = teclado.nextLine();
-                    System.out.print("Responsável: ");
-                    String responsavel = teclado.nextLine();
-                    System.out.print("Capacidade: ");
-                    int capacidade = teclado.nextInt();
-                    System.out.print("Valor ingresso: ");
-                    double valor = teclado.nextDouble();
-                    teclado.nextLine();
-                    Evento ev = ger.cadastrarEvento(titulo, local, data, responsavel, capacidade, valor);
-                    System.out.println("Evento cadastrado: " + ev);
-                    break;
-
-                case 3:
-                    System.out.println("=== Lista de Eventos ===");
-                    ger.listarEventos();
-                    break;
-
-                case 4:
-                    System.out.println("=== Lista de Participantes ===");
-                    ger.listarParticipantes();
-                    break;
-
-                case 5:
-                    System.out.print("Código evento: ");
-                    int ce = teclado.nextInt();
-                    teclado.nextLine();
-                    System.out.print("Tipo (1=Normal, 2=Especial): ");
-                    int t = teclado.nextInt();
-                    teclado.nextLine();
-                    System.out.print("CPF participante: ");
-                    String cpf = teclado.nextLine();
-                    Ingresso ing = ger.emitirIngresso(ce, t == 2, cpf);
-                    if (ing != null) System.out.println("Emitido: " + ing);
-                    else System.out.println("Erro na emissão (evento lotado, participante não encontrado, ou sem ingresso disponível).");
-                    break;
-
-                case 6:
-                    System.out.print("Código evento: ");
-                    int ce2 = teclado.nextInt();
-                    teclado.nextLine();
-                    System.out.print("Código ingresso: ");
-                    String ci = teclado.nextLine();
-                    if (ger.registrarEntrada(ce2, ci)) System.out.println("Entrada registrada com sucesso.");
-                    else System.out.println("Falha ao registrar entrada (ingresso inválido, sem participante ou já registrado).");
-                    break;
-
-                case 7:
-                    System.out.print("Código evento: ");
-                    int ce3 = teclado.nextInt();
-                    teclado.nextLine();
-                    System.out.print("Código ingresso: ");
-                    String ci2 = teclado.nextLine();
-                    if (ger.cancelarIngresso(ce3, ci2)) System.out.println("Ingresso cancelado com sucesso (agora disponível).");
-                    else System.out.println("Falha ao cancelar ingresso.");
-                    break;
-
-                case 8:
-                    System.out.print("Código evento: ");
-                    int ce4 = teclado.nextInt();
-                    teclado.nextLine();
-                    ger.listarParticipantesDeEvento(ce4);
-                    break;
-
-                case 9:
-                    System.out.print("Texto a buscar no nome do evento: ");
-                    String q = teclado.nextLine();
-                    ger.procurarEventosPorNome(q);
-                    break;
-
-                case 0:
-                    System.out.println("Saindo...");
-                    break;
-
-                default:
-                    System.out.println("Opção inválida!");
+            switch (opcao) {
+                case 1 -> ger.cadastrarParticipante(teclado);
+                case 2 -> ger.cadastrarEvento(teclado);
+                case 3 -> ger.listarEventos();
+                case 4 -> ger.listarParticipantes();
+                case 5 -> ger.emitirIngresso(teclado);
+                case 6 -> ger.registrarEntrada(teclado);
+                case 7 -> {
+                    System.out.print("Digite o código do ingresso: ");
+                    String codigo = teclado.nextLine();
+                    ger.cancelarIngresso(codigo);
+                }
+                case 8 -> ger.listarParticipantesDeEvento(teclado);
+                case 9 -> ger.procurarEventosPorNome(teclado);
+                case 10 -> ger.gerarRelatorioFinanceiro();
+                case 11 -> ger.consultarDetalhesEvento(teclado);
+                case 0 -> System.out.println("Saindo...");
+                default -> System.out.println("Opção inválida.");
             }
-
-        } while (op != 0);
-
+        }
     }
 }
