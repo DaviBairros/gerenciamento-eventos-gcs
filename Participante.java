@@ -1,12 +1,13 @@
 import java.util.ArrayList;
 
 public class Participante extends Pessoa {
-    private ArrayList<Ingresso> ingressos;
+    private final ArrayList<Ingresso> ingressos;
 
-    public Participante(String nome, String email, String cpf) {
-        super(nome, email, cpf);
+    public Participante(String nome, String cpf) {
+        super(nome, cpf);
         this.ingressos = new ArrayList<>();
     }
+
 
     public ArrayList<Ingresso> getIngressos() {
         return ingressos;
@@ -15,9 +16,8 @@ public class Participante extends Pessoa {
     public void adicionarIngresso(Ingresso ingresso) {
         ingressos.add(ingresso);
     }
-
     @Override
-    public String exibirInformacoes() {
-        return super.exibirInformacoes() + ", Ingressos: " + ingressos.size();
+    public String toString() {
+        return super.toString() + " | Ingressos: " + ingressos.size();
     }
 }
